@@ -1,0 +1,10 @@
+streamlit
+pandas
+pymupdf
+sentence-transformers
+faiss-cpu
+rank-bm25
+numpy
+rank-bm25
+huggingface_hub
+python-dotenv
