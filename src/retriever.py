@@ -143,4 +143,4 @@ def hybrid_retrieve(query, index, bm25, chunks, k=5, alpha=0.5):
             final_chunks.append(chunks[i])
             final_scores_out.append(final_scores[i])
 
-    return final_chunks, final_scores_o
+    return final_chunks, final_scores_out
