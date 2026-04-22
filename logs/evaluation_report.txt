@@ -1,3 +1,24 @@
+=========================================
+TIME: 2026-04-18 14:32:00
+MANUAL TEST — written by Kieron Cameron Neequaye Kotey
+
+QUERY I TYPED: Who won the most votes in the Volta Region in 2020?
+
+WHAT THE SYSTEM RETRIEVED:
+It pulled 5 CSV records for Volta Region 2020 showing NDC 
+dominated with significantly higher vote counts than NPP.
+
+WHAT THE AI RESPONDED:
+It correctly identified NDC as the leading party in Volta 
+Region for 2020 and listed the vote counts.
+
+MY OBSERVATION:
+The CSV override worked well here. The year filter (2020) 
+combined with the region name narrowed the results correctly.
+No hallucination detected. Response matched the raw data.
+
+RESULT: PASS
+=========================================
 
 ========================================================================
   GHANA RAG SYSTEM — ADVERSARIAL EVALUATION REPORT
