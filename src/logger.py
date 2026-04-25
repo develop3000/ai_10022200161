@@ -1,4 +1,6 @@
 # src/logger.py
+# Author: [Kieron Cameron Neequaye Kotey] | Index: [10022200161]
+
 import datetime
 import os
 
