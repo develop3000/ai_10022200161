@@ -1,5 +1,6 @@
 # src/data_processor.py
-# Author: [Your Name] | Index: [Your Index Number]
+# Author: [Kieron Cameron Neequaye Kotey] | Index: [10022200161]
+
 
 import pandas as pd
 import fitz
