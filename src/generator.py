@@ -1,5 +1,5 @@
 # src/generator.py
-# Author: [Your Name] | Index: [Your Index Number]
+# Author: [Kieron Cameron Neequaye Kotey] | Index: [10022200161]
 
 import os
 from dotenv import load_dotenv
