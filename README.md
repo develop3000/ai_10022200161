@@ -11,9 +11,7 @@
 ---
 
 ###  Final Deliverables Links
-* **Video Walkthrough (Max 2 mins):** [INSERT YOUTUBE/DRIVE LINK HERE]
-* **Deployed Cloud Application:** [INSERT DEPLOYED APP URL HERE]
-* **Full Project Documentation:** See `Artificial Intelligence Exams-10022200161.pdf` in the root directory.
+* **Deployed Cloud Application:** https://ai10022200161-finalexams.streamlit.app/
 
 ---
 
