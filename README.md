@@ -4,28 +4,28 @@
 **Institution:** Academic City University  
 **Lecturer:** Godwin N. Danso  
 
-### 👨‍🎓 Student Details
+###  Student Details
 * **Name:** Kieron Cameron Neequaye Kotey
 * **Index Number:** 10022200161
 
 ---
 
-### 🎥 Final Deliverables Links
+###  Final Deliverables Links
 * **Video Walkthrough (Max 2 mins):** [INSERT YOUTUBE/DRIVE LINK HERE]
 * **Deployed Cloud Application:** [INSERT DEPLOYED APP URL HERE]
 * **Full Project Documentation:** See `Artificial Intelligence Exams-10022200161.pdf` in the root directory.
 
 ---
 
-## 🚀 Project Overview
+##  Project Overview
 
 This repository contains a fully custom **Retrieval-Augmented Generation (RAG)** chatbot designed to answer complex queries regarding the 2025 Ghana Budget Statement (unstructured PDF) and historical Ghana Election Results (structured CSV).
 
-**⚠️ CRITICAL CONSTRAINT MET:** This system was built **100% from scratch**. No end-to-end frameworks like LangChain, LlamaIndex, or pre-built RAG pipelines were used. All core RAG components—including document cleaning, sliding-window chunking, vector embeddings, hybrid retrieval math, and prompt construction—were implemented manually using foundational libraries.
+** CRITICAL CONSTRAINT MET:** This system was built **100% from scratch**. No end-to-end frameworks like LangChain, LlamaIndex, or pre-built RAG pipelines were used. All core RAG components—including document cleaning, sliding-window chunking, vector embeddings, hybrid retrieval math, and prompt construction—were implemented manually using foundational libraries.
 
 ---
 
-## 🧠 Part G: Innovation Component (The Two-Brain Router)
+## Part G: Innovation Component (The Two-Brain Router)
 Standard unified RAG architectures suffer from "context starvation" when sparse tabular data (CSV) competes mathematically against dense narrative text (PDF). 
 
 To solve this, this project features a novel **Domain-Specific Scoring Function** (The Strict Two-Brain Router). The system utilizes an active intent-classification layer that preemptively intercepts queries:
