@@ -1,5 +1,70 @@
 # Author: [Kieron Cameron Neequaye Kotey] | Index: [10022200161]
 
+
+=========================================
+DATE: 2026-04-20  TIME: 12:17
+MANUAL TEST — written by Kieron Cameron Neequaye Kotey
+
+QUERY: "who won 2020 election in ghana"
+
+WHAT THE SYSTEM RETRIEVED:
+
+NPP: Nana Akufo Addo — Western Region 50.93%
+
+NDC: John Dramani Mahama — Western Region 46.16%
+(Retrieved 5 fragmented regional records based on keyword matching; no national summary present in the vector space).
+
+WHAT THE AI RESPONDED:
+"Based on the context, Nana Akufo Addo from the NPP won the 2020 election in the Western Region with 50.93%."
+
+MY OBSERVATION (FAILURE ANALYSIS):
+The system answered per-region instead of nationally. Because the raw CSV only contains regional breakdowns, standard retrieval just pulled random regional rows. The LLM was context-starved and could not see the macroscopic national picture.
+
+RESULT: FAIL
+
+ENGINEERING FIX APPLIED:
+
+Built build_national_summary_chunks() in data_processor.py to mathematically aggregate all regional votes into a single "NATIONAL RESULTS SUMMARY" string per year.
+
+Updated retriever.py (The Two-Brain Router) to actively hunt for and inject this specific chunk when election keywords are detected.
+
+Fix engineered and deployed for verification in the next iteration.
+=========================================
+DATE: 2026-04-20  TIME: 13:15
+MANUAL TEST — written by Kieron Cameron Neequaye Kotey
+
+QUERY: "who won 2020 election in ghana"
+
+WHAT THE SYSTEM RETRIEVED:
+
+NATIONAL RESULTS SUMMARY: Nana Akufo Addo (NPP) 51.26%, John Dramani Mahama (NDC) 47.4%
+
+Regional records for NPP/NDC...
+
+WHAT THE AI RESPONDED:
+"Based on the national aggregate, Nana Akufo Addo of the NPP party won the 2020 election in Ghana with 51.26% of the total national vote."
+
+MY OBSERVATION (VERIFICATION):
+The fix was successful. The Two-Brain Router correctly identified the election intent, bypassed the PDF, and the new build_national_summary_chunks function forced the national summary to the top of the context window. The AI answered the question perfectly.
+
+RESULT: PASS (Bug fixed successfully).
+=========================================
+DATE: 2026-04-20  TIME: 16:30
+MANUAL TEST — written by Kieron Cameron Neequaye Kotey
+
+QUERY: "What percentage of votes did Nana Akufo Addo get in the Ashanti Region during the 2020 election?"
+
+WHAT THE SYSTEM RETRIEVED:
+Ghana Election Result Record: Year: 2020, Old Region: Ashanti Region, New Region: Ashanti Region, Code: NPP, Candidate: Nana Akufo Addo, Party: NPP, Votes: 1795824, Votes(%): 72.79%
+(Plus 4 other supporting regional chunks).
+
+WHAT THE AI RESPONDED:
+"Nana Akufo Addo received 72.79% of the votes in the Ashanti Region during the 2020 election."
+
+MY OBSERVATION:
+The system successfully retrieved the specific CSV row for Ashanti Region 2020. The Two-Brain Router correctly routed this to the CSV-only branch, and the LLM accurately parsed the 72.79% value.
+
+RESULT: PASS (System successfully localized the data without budget pollution).
 =========================================
 TIME: 2026-04-19 23:04:42
 USER QUERY: who won 2020 Ghana Election?
@@ -1244,5 +1309,77 @@ RETRIEVED CONTEXT (Top Chunks):
 -----------------------------------------
 FINAL RESPONSE:
 Based on the national results summary, Jerry John Rawlings of the NDC party won the 1992 elections with 57.87% of the total national vote.
+=========================================
+
+
+=========================================
+TIME: 2026-04-23 16:49:38
+USER QUERY: who won 2020 election in ghana?
+-----------------------------------------
+RETRIEVED CONTEXT (Top Chunks):
+['Ghana Election Result Record: Ghana 2020 Presidential Election — NATIONAL RESULTS SUMMARY: | Total votes cast nationally: 13,218,076 | National results by candidate (all regions combined): |   Nana Akufo Addo (NPP): 6,776,066 votes — 51.26% of national vote |   John Dramani Mahama (NDC): 6,265,266 votes — 47.4% of national vote |   Christian Kwabena Andrews (GUM): 93,701 votes — 0.71% of national vote |   Christian Kwabena Andrews (GUM): 12,564 votes — 0.1% of national vote |   Ivor Kobina Greenstreet (CPP): 10,893 votes — 0.08% of national vote |   David Asibi Ayindenaba Apasera (PNC): 10,453 votes — 0.08% of national vote |   Alfred Kwame Asiedu Walker (IND): 8,836 votes — 0.07% of national vote |   Percival Kofi Akpaloo (LPG): 7,027 votes — 0.05% of national vote |   Hassan Ayariga (APC): 6,689 votes — 0.05% of national vote |   Bridget Dzogbenuku (PPP): 6,447 votes — 0.05% of national vote |   Nana Konadu Agyeman Rawlings (NDP): 6,055 votes — 0.05% of national vote |   Akua Donkor (GFP): 5,047 votes — 0.04% of national vote |   Henry Herbert Lartey (GCPP): 3,278 votes — 0.02% of national vote |   Ivor Kobina Greenstreet (CPP): 1,356 votes — 0.01% of national vote |   Alfred Kwame Asiedu Walker (IND): 952 votes — 0.01% of national vote |   Percival Kofi Akpaloo (LPG): 712 votes — 0.01% of national vote |   Akua Donkor (GFP): 593 votes — 0.0% of national vote |   Hassan Ayariga (APC): 482 votes — 0.0% of national vote |   Nana Konadu Agyeman Rawlings (NDP): 476 votes — 0.0% of national vote |   David Asibi Ayindenaba Apasera (PNC): 444 votes — 0.0% of national vote |   Bridget Dzogbenuku (PPP): 435 votes — 0.0% of national vote |   Henry Herbert Lartey (GCPP): 304 votes — 0.0% of national vote | WINNER: Based on national aggregate, Nana Akufo Addo of the NPP party led with 51.26% of the total national vote.', 'Ghana Election Result Record: Year: 2020, Old Region: Western\xa0Region, New Region: Western\xa0Region, Code: NPP, Candidate: Nana Akufo Addo, Party: NPP, Votes: 439724, Votes(%): 50.93%', 'Ghana Election Result Record: Year: 2020, Old Region: Western\xa0Region, New Region: Western\xa0Region, Code: NDC, Candidate: John Dramani Mahama, Party: NDC, Votes: 398549, Votes(%): 46.16%', 'Ghana Election Result Record: Year: 2020, Old Region: Volta\xa0Region, New Region: Volta\xa0Region, Code: NPP, Candidate: Nana Akufo Addo, Party: NPP, Votes: 100481, Votes(%): 14.05%', 'Ghana Election Result Record: Year: 2020, Old Region: Western\xa0Region, New Region: Western\xa0Region, Code: Others, Candidate: Christian Kwabena Andrews, Party: GUM, Votes: 20638, Votes(%): 2.39%']
+-----------------------------------------
+FINAL RESPONSE:
+Based on the national aggregate, Nana Akufo Addo of the NPP party won the 2020 election in Ghana with 51.26% of the total national vote.
+=========================================
+
+
+=========================================
+TIME: 2026-04-23 16:50:05
+USER QUERY: who won 2016 election in ghana?
+-----------------------------------------
+RETRIEVED CONTEXT (Top Chunks):
+['Ghana Election Result Record: Ghana 2016 Presidential Election — NATIONAL RESULTS SUMMARY: | Total votes cast nationally: 10,751,644 | National results by candidate (all regions combined): |   Nana Akufo Addo (NPP): 5,767,076 votes — 53.64% of national vote |   John Dramani Mahama (NDC): 4,807,229 votes — 44.71% of national vote |   Bridget Dzogbenuku (PPP): 106,445 votes — 0.99% of national vote |   Ivor Kobina Greenstreet (CPP): 25,800 votes — 0.24% of national vote |   David Asibi Ayindenaba Apasera (PNC): 22,456 votes — 0.21% of national vote |   Alfred Kwame Asiedu Walker (IND): 15,971 votes — 0.15% of national vote |   Nana Konadu Agyeman Rawlings (NDP): 6,667 votes — 0.06% of national vote | WINNER: Based on national aggregate, Nana Akufo Addo of the NPP party led with 53.64% of the total national vote.', 'Ghana Election Result Record: Year: 2016, Old Region: Western\xa0Region, New Region: Western\xa0Region, Code: NPP, Candidate: Nana Akufo Addo, Party: NPP, Votes: 384211, Votes(%): 55.83%', 'Ghana Election Result Record: Year: 2016, Old Region: Western\xa0Region, New Region: Western\xa0Region, Code: NDC, Candidate: John Dramani Mahama, Party: NDC, Votes: 285938, Votes(%): 41.55%', 'Ghana Election Result Record: Year: 2016, Old Region: Volta\xa0Region, New Region: Volta\xa0Region, Code: NPP, Candidate: Nana Akufo Addo, Party: NPP, Votes: 60802, Votes(%): 10.81%', 'Ghana Election Result Record: Year: 2016, Old Region: Western\xa0Region, New Region: Western\xa0Region, Code: Others, Candidate: Alfred Kwame Asiedu Walker, Party: IND, Votes: 438, Votes(%): 0.06%']
+-----------------------------------------
+FINAL RESPONSE:
+Based on the national aggregate, Nana Akufo Addo of the NPP party won the 2016 election in Ghana with 53.64% of the total national vote.
+=========================================
+
+
+=========================================
+TIME: 2026-04-23 16:50:13
+USER QUERY: who won 2012 election in ghana?
+-----------------------------------------
+RETRIEVED CONTEXT (Top Chunks):
+['Ghana Election Result Record: Ghana 2012 Presidential Election — NATIONAL RESULTS SUMMARY: | Total votes cast nationally: 10,986,385 | National results by candidate (all regions combined): |   John Dramani Mahama (NDC): 5,574,761 votes — 50.74% of national vote |   Nana Akufo Addo (NPP): 5,248,898 votes — 47.78% of national vote |   Bridget Dzogbenuku (PPP): 64,362 votes — 0.59% of national vote |   Henry Herbert Lartey (GCPP): 38,223 votes — 0.35% of national vote |   David Asibi Ayindenaba Apasera (PNC): 24,617 votes — 0.22% of national vote |   Ivor Kobina Greenstreet (CPP): 20,323 votes — 0.18% of national vote |   Alfred Kwame Asiedu Walker (IND): 15,201 votes — 0.14% of national vote | WINNER: Based on national aggregate, John Dramani Mahama of the NDC party led with 50.74% of the total national vote.', 'Ghana Election Result Record: Year: 2012, Old Region: Western\xa0Region, New Region: Western\xa0Region, Code: NPP, Candidate: Nana Akufo Addo, Party: NPP, Votes: 342217, Votes(%): 47.69%', 'Ghana Election Result Record: Year: 2012, Old Region: Western\xa0Region, New Region: Western\xa0Region, Code: NDC, Candidate: John Dramani Mahama, Party: NDC, Votes: 360542, Votes(%): 50.24%', 'Ghana Election Result Record: Year: 2012, Old Region: Volta\xa0Region, New Region: Volta\xa0Region, Code: NPP, Candidate: Nana Akufo Addo, Party: NPP, Votes: 46942, Votes(%): 7.41%', 'Ghana Election Result Record: Year: 2012, Old Region: Central\xa0Region, New Region: Central\xa0Region, Code: Others, Candidate: Bridget Dzogbenuku, Party: PPP, Votes: 13873, Votes(%): 1.47%']
+-----------------------------------------
+FINAL RESPONSE:
+Based on the national aggregate, John Dramani Mahama of the NDC party won the 2012 election in Ghana with 50.74% of the total national vote.
+=========================================
+
+
+=========================================
+TIME: 2026-04-23 16:50:23
+USER QUERY: who won 2008 election in ghana?
+-----------------------------------------
+RETRIEVED CONTEXT (Top Chunks):
+['Ghana Election Result Record: Ghana 2008 Presidential Election — NATIONAL RESULTS SUMMARY: | Total votes cast nationally: 8,490,070 | National results by candidate (all regions combined): |   Nana Addo (NPP): 4,186,578 votes — 49.31% of national vote |   J. A Mills (NDC): 4,089,313 votes — 48.17% of national vote |   Papa K. Nduom (CPP): 116,884 votes — 1.38% of national vote |   Edward Mahama (PNC): 77,518 votes — 0.91% of national vote |   Kwesi Amoafo-Yeboah (IND): 19,777 votes — 0.23% of national vote | WINNER: Based on national aggregate, Nana Addo of the NPP party led with 49.31% of the total national vote.', 'Ghana Election Result Record: Year: 2008, Old Region: Western\xa0Region, New Region: Western\xa0Region, Code: NPP, Candidate: Nana Addo, Party: NPP, Votes: 394521, Votes(%): 46.85%', 'Ghana Election Result Record: Year: 2008, Old Region: Volta\xa0Region, New Region: Volta\xa0Region, Code: NPP, Candidate: Nana Addo, Party: NPP, Votes: 99584, Votes(%): 14.98%', 'Ghana Election Result Record: Year: 2008, Old Region: Ashanti\xa0Region, New Region: Ashanti\xa0Region, Code: NPP, Candidate: Nana Addo, Party: NPP, Votes: 1214350, Votes(%): 72.40%', 'Ghana Election Result Record: Year: 2008, Old Region: Western\xa0Region, New Region: Western\xa0Region, Code: Others, Candidate: Edward Mahama, Party: PNC, Votes: 3580, Votes(%): 0.43%']
+-----------------------------------------
+FINAL RESPONSE:
+Based on the national aggregate, Nana Addo of the NPP party won the 2008 election in Ghana with 49.31% of the total national vote.
+=========================================
+
+
+=========================================
+TIME: 2026-04-23 16:50:33
+USER QUERY: who won 2004 election in ghana?
+-----------------------------------------
+RETRIEVED CONTEXT (Top Chunks):
+['Ghana Election Result Record: Ghana 2004 Presidential Election — NATIONAL RESULTS SUMMARY: | Total votes cast nationally: 8,697,049 | National results by candidate (all regions combined): |   J. A. Kuffour (NPP): 4,556,806 votes — 52.39% of national vote |   J. A. Mills (NDC): 3,876,949 votes — 44.58% of national vote |   Edward Mahama (PNC): 175,540 votes — 2.02% of national vote |   George Aggudey (CPP): 87,754 votes — 1.01% of national vote | WINNER: Based on national aggregate, J. A. Kuffour of the NPP party led with 52.39% of the total national vote.', 'Ghana Election Result Record: Year: 2004, Old Region: Western\xa0Region, New Region: Western\xa0Region, Code: NDC, Candidate: J. A. Mills, Party: NDC, Votes: 348987, Votes(%): 40.65%', 'Ghana Election Result Record: Year: 2004, Old Region: Western\xa0Region, New Region: Western\xa0Region, Code: NPP, Candidate: J. A. Kuffour, Party: NPP, Votes: 487528, Votes(%): 56.78%', 'Ghana Election Result Record: Year: 2004, Old Region: Volta\xa0Region, New Region: Volta\xa0Region, Code: NDC, Candidate: J. A. Mills, Party: NDC, Votes: 591696, Votes(%): 83.83%', 'Ghana Election Result Record: Year: 2004, Old Region: Western\xa0Region, New Region: Western\xa0Region, Code: Others, Candidate: George Aggudey, Party: CPP, Votes: 14768, Votes(%): 1.72%']
+-----------------------------------------
+FINAL RESPONSE:
+Based on the national results summary, J. A. Kuffour of the NPP party won the 2004 election in Ghana with 52.39% of the total national vote.
+=========================================
+
+
+=========================================
+TIME: 2026-04-23 16:51:05
+USER QUERY: who won 2008 election in ghana?
+-----------------------------------------
+RETRIEVED CONTEXT (Top Chunks):
+['Ghana Election Result Record: Ghana 2008 Presidential Election — NATIONAL RESULTS SUMMARY: | Total votes cast nationally: 8,490,070 | National results by candidate (all regions combined): |   Nana Addo (NPP): 4,186,578 votes — 49.31% of national vote |   J. A Mills (NDC): 4,089,313 votes — 48.17% of national vote |   Papa K. Nduom (CPP): 116,884 votes — 1.38% of national vote |   Edward Mahama (PNC): 77,518 votes — 0.91% of national vote |   Kwesi Amoafo-Yeboah (IND): 19,777 votes — 0.23% of national vote | WINNER: Based on national aggregate, Nana Addo of the NPP party led with 49.31% of the total national vote.', 'Ghana Election Result Record: Year: 2008, Old Region: Western\xa0Region, New Region: Western\xa0Region, Code: NPP, Candidate: Nana Addo, Party: NPP, Votes: 394521, Votes(%): 46.85%', 'Ghana Election Result Record: Year: 2008, Old Region: Volta\xa0Region, New Region: Volta\xa0Region, Code: NPP, Candidate: Nana Addo, Party: NPP, Votes: 99584, Votes(%): 14.98%', 'Ghana Election Result Record: Year: 2008, Old Region: Ashanti\xa0Region, New Region: Ashanti\xa0Region, Code: NPP, Candidate: Nana Addo, Party: NPP, Votes: 1214350, Votes(%): 72.40%', 'Ghana Election Result Record: Year: 2008, Old Region: Western\xa0Region, New Region: Western\xa0Region, Code: Others, Candidate: Edward Mahama, Party: PNC, Votes: 3580, Votes(%): 0.43%']
+-----------------------------------------
+FINAL RESPONSE:
+Based on the national aggregate, Nana Addo of the NPP party won the 2008 election in Ghana with 49.31% of the total national vote.
 =========================================
 
