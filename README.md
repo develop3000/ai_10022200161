@@ -34,7 +34,7 @@ To solve this, this project features a novel **Domain-Specific Scoring Function*
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 ai_10022200161/
