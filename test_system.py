@@ -1,3 +1,6 @@
+# Author: [Kieron Cameron Neequaye Kotey] | Index: [10022200161]
+
+
 from src.data_processor import load_and_chunk
 from src.retriever import build_index, hybrid_retrieve
 
